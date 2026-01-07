@@ -1,4 +1,4 @@
-<nav class="main-header navbar navbar-expand navbar-white navbar-light text-sm">
+<nav class="main-header navbar navbar-expand navbar-yellow navbar-light text-sm">
 
     <ul class="navbar-nav">
         <li class="nav-item">
@@ -60,9 +60,12 @@
                             <i class="fa fa-fw fa-user text-lightblue"></i>
                             Profil
                         </a>
-                        <a class="btn btn-default btn-flat float-right" href="/logout">
-                            <i class="fa fa-fw fa-power-off text-red"></i>
-                            Keluar
+                        <a class="btn btn-default btn-flat float-right" href="#">
+                            <form action="{{ route('logout') }}" method="POST">
+    @csrf
+    <button type="submit"><i class="fa fa-fw fa-power-off text-red"></i>Logout</button>
+</form>
+                            
                         </a>
                     @endauth
                 </li>

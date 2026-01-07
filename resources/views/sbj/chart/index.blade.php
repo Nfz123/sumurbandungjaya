@@ -4,7 +4,62 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 @endpush
 @section('content')
-    <section class="content">
+<div class="container">
+    <canvas id="monthlyPieChart"></canvas>
+</div>
+
+<script>
+    var ctx = document.getElementById('monthlyPieChart').getContext('2d');
+    var data = @json($data); // Konversi data PHP menjadi JSON
+
+    var months = []; // Simpan nama bulan
+    var totals = []; // Simpan total transaksi per bulan
+
+    data.forEach(function(item) {
+        var month = item.created_at.split('-')[1];
+        if (!months.includes(month)) {
+            months.push(month);
+        }
+    });
+
+    months.forEach(function(month) {
+        var total = 0;
+
+        data.forEach(function(item) {
+            var itemMonth = item.created_at.split('-')[1];
+            if (itemMonth === month) {
+                total += parseFloat(item.created_at); // Sesuaikan dengan nama kolom yang menyimpan jumlah transaksi
+            }
+        });
+
+        totals.push(total);
+    });
+
+    var chart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: months,
+            datasets: [{
+                data: totals,
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.7)',
+                    'rgba(54, 162, 235, 0.7)',
+                    'rgba(255, 206, 86, 0.7)',
+                    'rgba(75, 192, 192, 0.7)',
+                    'rgba(153, 102, 255, 0.7)',
+                    'rgba(255, 159, 64, 0.7)'
+                    // Tambahkan warna lain sesuai kebutuhan
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false
+        }
+    });
+</script>
+    {{-- <section class="content">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
@@ -106,75 +161,9 @@
             data: pieChartData
         });
     </script>
+
+
     <script>
-        // Sample data for demonstration purposes (replace this with your actual data)
-        var data = @json($data);
-        console.log('data');
-        //  canvas element
-        var ctx = document.getElementById('lineChart').getContext('2d');
-
-        // Extracting labels and data from the provided data
-        var labels = data.map(item => item.month);
-        var uniqueNameTypes = [...new Set(data.map(item => item.namatype))];
-
-        // Prepare datasets for each unique nametype
-        var datasets = uniqueNameTypes.map(namatype => {
-            var quantities = data.filter(item => item.namatype === namatype).map(item => item.qty);
-
-            return {
-                label: 'Quantity - ' + namatype,
-                data: quantities,
-                borderColor: getRandomColor(),
-                fill: false,
-            };
-        });
-
-        // Define the line chart data
-        var lineChartData = {
-            labels: labels,
-            datasets: datasets,
-        };
-
-        // Create the line chart
-        var lineChart = new Chart(ctx, {
-            type: 'line',
-            data: lineChartData,
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    x: {
-                        display: true,
-                        title: {
-                            display: true,
-                            text: 'Month'
-                        }
-                    },
-                    y: {
-                        display: true,
-                        title: {
-                            display: true,
-                            text: 'Quantity'
-                        }
-                    }
-                }
-            }
-        });
-
-        // Function to generate a random hexadecimal color code
-        function getRandomColor() {
-            var letters = "0123456789ABCDEF";
-            var color = "#";
-            for (var i = 0; i < 6; i++) {
-                color += letters[Math.floor(Math.random() * 16)];
-            }
-            return color;
-        }
-    </script>
-
-
-
-    {{-- <script>
         // ... (Existing code)
     
         // Function to get month and year from a date string (YYYY-MM-DD format)
@@ -216,5 +205,7 @@
         // ... (Remaining code)
     
     </script> --}}
-
+    <div class="table-image">
+        <img src="{{ URL::asset('assets/dist/img/2.png') }}" alt="Image Description" width="12" height="12">
+    </div>
 @endsection

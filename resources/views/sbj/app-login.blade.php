@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Sistem Informasi SBJ</title>
+    <title>Sistem Informasi SBJ Ekspedisi</title>
 
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&amp;display=fallback">
@@ -21,7 +21,7 @@
 
         <div class="card card-outline card-warning">
             <div class="card-header text-center">
-                <a href="#" class="h1"><b>S</b>BJ</a>
+                <a href="#" class="h1"><b>S</b>BJ<a>Ekspedisi</a></a>
             </div>
             <div class="card-body">
                 @yield('content')
@@ -33,6 +33,7 @@
     <script src="{{ URL::asset('assets/dist/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ URL::asset('assets/dist/js/adminlte.min.js') }}"></script>
     <script src="{{ URL::asset('assets/dist/plugins/toastr/toastr.min.js') }}"></script>
+    <script src="{{ URL::asset('css/style.css') }}"></script>
     <script>
         $(document).ready(function() {
             toastr.options.timeOut = 10000;

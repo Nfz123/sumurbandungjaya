@@ -1,21 +1,19 @@
-<aside class="main-sidebar sidebar-dark-primary elevation-4">
+<aside class="main-sidebar elevation-4 sidebar-primary">
 
     <a href="/home" class="brand-link">
         <img src="{{ URL::asset('assets/dist/img/sbjback.png') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
             style="opacity: .8">
-        <span class="brand-text font-weight-light">PT SBJ</span>
+        <span class="brand-text font-weight-light">SBJ Ekspedisi</span>
     </a>
 
     <div class="sidebar">
-
-
-
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                 data-accordion="false">
+                @hasanyrole('Admin')
                 <li class="nav-item">
-                    <a href="{{ route('Typebarang.index') }}" class="nav-link">
-                        <i class="nav-icon fas fa-th text-info"></i>
+                    <a href="{{ route('Typebarang.index') }}" class="nav-link {{ request()->routeIs('Typebarang.*') ? 'active' : '' }}">
+                        <i class="nav-icon fa-solid fa-truck-front text-info"></i>
                         <p>
                             Master Type
                             <span class="right badge badge-danger">New</span>
@@ -23,58 +21,79 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('transaksi.create') }}" class="nav-link">
+                    <a href="{{ route('angsuran.index') }}" class="nav-link {{ request()->routeIs('angsuran.*') ? 'active' : '' }}">
+                        <i class="nav-icon fa-solid fa-solid fa-credit-card text-warning"></i>
+                        <p>
+                            Angsuran
+                        </p>
+                    </a>
+                </li>
+                 <li class="nav-item">
+                    <a href="{{ route('finance.index') }}" class="nav-link {{ request()->routeIs('finance.*') ? 'active' : '' }}">
+                        <i class="nav-icon fa-solid fa-solid fa-credit-card text-Success"></i>
+                        <p>
+                            Finance
+                        </p>
+                    </a>
+                </li>
+                @endhasanyrole
+                @hasanyrole('Admin|ekspedisi')
+                <li class="nav-header">Ekpedisi</li>
+                <li class="nav-item">
+                    <a href="{{ route('ekspedisi.create') }}" class="nav-link">
                         <i class="nav-icon fas fa-copy text-warning"></i>
                         <p>
-                            Transaksi
-                            <i class="fas fa-angle-left right"></i>
-                            <span class="badge badge-info right">6</span>
+                            Create
+                            {{-- <i class="fas fa-angle-left right"></i>
+                            <span class="badge badge-info right">6</span> --}}
                         </p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('chart.index') }}" class="nav-link">
-                        <i class="nav-icon fas fa-chart-pie text-primary"></i>
+                    <a  href="{{ route('tujuan.index') }}" class="nav-link">
+                       <i class="nav-icon fas fa-location-dot text-danger"></i>
                         <p>
-                            Charts
-                            <i class="right fas fa-angle-left"></i>
+                            Tujuan
+                            <span class="badge badge-info right"></span>
                         </p>
                     </a>
-
-                </li>
-                <li class="nav-header">Laporan</li>
-                <li class="nav-item">
-                    <a href="{{ route('laporan.index') }}" class="nav-link">
-                        <i class="nav-icon fas fa-file"></i>
-                        <p>Harian Harga Beli</p>
-                    </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('laporan.indexhargajual') }}" class="nav-link">
-                        <i class="nav-icon fas fa-file"></i>
-                        <p>Harian Harga Jual</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('laporan.indexminggu') }}" class="nav-link">
+                    <a  href="{{ route('ekspedisi.index') }}" class="nav-link">
                         <i class="nav-icon fas fa-calendar-alt"></i>
                         <p>
-                            Mingguan
+                            Laporan
                             <span class="badge badge-info right">2</span>
                         </p>
                     </a>
                 </li>
+                @endhasanyrole
+                @hasanyrole('Admin|service')
+                <li class="nav-header">Service</li>
                 <li class="nav-item">
-                    <a href="pages/calendar.html" class="nav-link">
-                        <i class="nav-icon fas fa-calendar-alt"></i>
+                    <a href="{{ route('serviced.create') }}" class="nav-link">
+                        <i class="nav-icon fas fa-copy text-warning"></i>
                         <p>
-                            Bulanan
-                            <span class="badge badge-info right">2</span>
+                            Create
+                            {{-- <i class="fas fa-angle-left right"></i>
+                            <span class="badge badge-info right">6</span> --}}
                         </p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link active">
+                    <a  href="{{ route('serviced.laporanServiced') }}" class="nav-link">
+                        <i class="nav-icon fas fa-calendar-alt"></i>
+                        <p>
+                            Laporan
+                            <span class="badge badge-info right">2</span>
+                        </p>
+                    </a>
+                </li>
+                @endhasanyrole
+                @hasanyrole('Admin')
+                <li class="nav-header">Admin</li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>
                             Data User
@@ -101,16 +120,14 @@
                             </a>
                         </li>
                     </ul>
+                    
                 </li>
-                {{-- <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon far fa-circle text-info"></i>
-                        <p>Informational</p>
-                    </a>
-                </li> --}}
+                @endhasanyrole
+            
             </ul>
+       
         </nav>
-
+        
     </div>
 
 </aside>

@@ -149,6 +149,8 @@
                     //     // Pesan gagal disimpan (jika diperlukan)
                     //     alert('Gagal menyimpan data. Respon: ' + response);
                     // }
+                    window.location.href="{{ route('laporan.inputlaporanbulananpertanggal') }}"
+                    // href="{{ route('laporan.inputlaporanbulananpertanggal') }}"
                 },
                 error: function() {
                     // Pesan gagal disimpan (jika diperlukan)
@@ -215,7 +217,7 @@
             var uom = $('#modalBody tr').eq(modalRowId).find('td').eq(2).text();
             var qty = $('#modalBody tr').eq(modalRowId).find('td').eq(3).text();
             var ppn = $('#modalBody tr').eq(modalRowId).find('td').eq(4).text();
-            var hargajual = $('#modalBody tr').eq(modalRowId).find('td').eq(4).text();
+            var hargajual = $('#modalBody tr').eq(modalRowId).find('td').eq(5).text();
 
             var selectedRow = $('#row' + rowId);
             selectedRow.find('input[name="kodetype[]"]').val(kodetype);
@@ -223,7 +225,7 @@
             selectedRow.find('input[name="uom[]"]').val(uom);
             selectedRow.find('input[name="qty[]"]').val(qty);
             selectedRow.find('input[name="ppn[]"]').val(ppn);
-            selectedRow.find('input[name="hargajual[]"]').val(ppn);
+            selectedRow.find('input[name="hargajual[]"]').val(hargajual);
 
             $('#dataModal').modal('hide');
         }

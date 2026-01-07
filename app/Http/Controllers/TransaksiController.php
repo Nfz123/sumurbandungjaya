@@ -26,7 +26,7 @@ class TransaksiController extends Controller
         $no = 'INV' . $years . $table_no;
         $auto = substr($no, 7);
         $auto = intval($auto) + 1;
-        $doku =  substr($no, 3, 4) . $gar . str_repeat('0', 5 - strlen($auto)) . $auto . 'SBJ';
+        $doku =  substr($no, 3, 4) . $gar . str_repeat('0', 5 - strlen($auto)) . $auto . 'SBJ3-DSC';
 
         $typebarang = Typebarang::get();
         return view('sbj.transaksi.create', compact('typebarang', 'doku'));

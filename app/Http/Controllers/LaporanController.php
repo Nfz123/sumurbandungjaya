@@ -68,6 +68,45 @@ class LaporanController extends Controller
         // return $sekolah;
         return view('sbj.laporan.laporanmingguan', compact('transaksidetil'));
     }
+     public function laporanbulananpertanggal($tglawal,$tglakhir)
+    {
+// dd(["tanggal awal:".$tglawal,"tanggal akhir:".$tglakhir]);
+         $transaksidetil = Transaksidetil::join('transaksi', 'transaksi_detils.transaksi_id', '=', 'transaksi.id')
+        ->select('transaksi_detils.*', 'transaksi.kode_transaksi', 'transaksi.tanggal', 'transaksi.perusahaan')
+->whereBetween('transaksi.tanggal',[$tglawal,$tglakhir])
+        ->get();
+
+        // $transaksidetilcari = Transaksidetil::whereBetween('tanggal', [$tanggal1, $tanggal2])->get();
+        // return view('users', compact('users'));
+        // return $sekolah;
+        return view('sbj.laporan.laporanbulananpertanggal', compact('transaksidetil'));
+    }
+    public function inputlaporanbulananpertanggal()
+    {
+        // $tanggal1 = $request->input('tanggal1');
+        // $tanggal2 = $request->input('tanggal2');
+//          $transaksidetil = Transaksidetil::join('transaksi', 'transaksi_detils.transaksi_id', '=', 'transaksi.id')
+//         ->select('transaksi_detils.*', 'transaksi.kode_transaksi', 'transaksi.tanggal', 'transaksi.perusahaan')
+// ->whereBetween('transaksi.tanggal',[$tglawal,$tglakhir])
+//         ->get();
+        // $transaksidetilcari = Transaksidetil::whereBetween('tanggal', [$tanggal1, $tanggal2])->get();
+        // return view('users', compact('users'));
+        // return $sekolah;
+        return view('sbj.laporan.inputlaporanbulananpertanggal');
+    }
+        public function laporanlaba($tglawal,$tglakhir)
+    {
+         $transaksidetil = Transaksidetil::join('transaksi', 'transaksi_detils.transaksi_id', '=', 'transaksi.id')
+        ->select('transaksi_detils.*', 'transaksi.kode_transaksi', 'transaksi.tanggal', 'transaksi.perusahaan')
+->whereBetween('transaksi.tanggal',[$tglawal,$tglakhir])
+        ->get();
+
+        // $transaksidetilcari = Transaksidetil::whereBetween('tanggal', [$tanggal1, $tanggal2])->get();
+        // return view('users', compact('users'));
+        // return $sekolah;
+        return view('sbj.laporan.laporanlaba', compact('transaksidetil'));
+    }
+   
     // public function search(Request $request)
     // {
     //     return view('search_results', compact('transaksidetil'));
