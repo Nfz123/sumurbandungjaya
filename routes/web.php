@@ -71,10 +71,14 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('ekspedisi', [EkspedisiController::class, 'index'])->name('ekspedisi.index');
     Route::get('/servicecreate', [ServiceController::class, 'create'])->name('serviced.create');
     Route::post('/simpanserviced', [ServiceController::class, 'simpanserviced'])->name('serviced.simpanserviced');
+
+
     Route::POST('/tujuan', [TujuanController::class, 'simpan'])->name('tujuan.simpan');
     Route::get('/tujuan', [TujuanController::class, 'index'])->name('tujuan.index');
     Route::get('/cek-tujuan', [TujuanController::class,'cekduplikat'])->name('tujuan.cekduplikat');
     Route::delete('/tujuan/{id}', [TujuanController::class, 'destroy'])->name('tujuan.hapus');
+    Route::get('/tujuan/{id}/edit', [TujuanController::class, 'edit']);
+    Route::put('/tujuan/{id}', [TujuanController::class, 'update']);
     // Tampilkan form pencarian
     Route::get('/service/pertanggal-type', [ServiceController::class, 'laporanServiced'])->name('serviced.laporanServiced');
     // Proses filter data
@@ -105,7 +109,3 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('index', [financeController::class, 'index'])->name('finance.index');
 
 });
-// Route::group(['middleware' => ['auth']], function () {
-  
-    
-// });

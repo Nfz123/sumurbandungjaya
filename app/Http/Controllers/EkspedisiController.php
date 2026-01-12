@@ -11,15 +11,55 @@ use App\Models\TransaksiDetil;
 use App\Models\Typebarang;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
-use DataTables;
+use Yajra\DataTables\Facades\DataTables;
+// use DataTables;
 class EkspedisiController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-       
-        return view('sbj.ekspedisi.index');
+        $query = DB::table('ekspedisi as e')
+            ->join('ekspedisi_detail as ed', 'ed.ekspedisi_id', '=', 'e.id')
+             ->join('typebarang as tb', 'tb.id', '=', 'e.kendaraan_id')
+            ->join('supir as s', 's.id', '=', 'e.supir_id')
+            ->select(
+                'e.id as ekspedisi_id',
+                'e.tanggal',
+                'tb.nama_alias',
+                's.namasupir',
+                'tb.no_seri',
+                'ed.nosalesorder',
+                's.gudang',
+                'ed.tujuan',
+                'ed.qty_terima',
+                'ed.qty_tolak',
+                'e.tkbm',
+                'e.uangjalan',
+                'e.hargaritasi'
+            );
+        // 🔍 FILTER DARI REQUEST
+        if ($request->filled('no_seri')) {
+            $query->where('tb.no_seri', 'like', '%' . $request->no_seri . '%');
+        }
+
+        if ($request->filled('namasupir')) {
+            $query->where('s.namasupir', 'like', '%' . $request->namasupir . '%');
+        }
+
+        if ($request->filled('tanggal')) {
+            $query->whereDate('e.tanggal', $request->tanggal);
+        }
+
+            // 🔥 JIKA REQUEST AJAX (DATATABLES)
+        if ($request->ajax()) {
+            return DataTables::of($query)
+                ->addIndexColumn()
+                ->make(true);
+        }
+        return view('sbj.ekspedisi.index',compact('query'));
     }
+
     public function getData(Request $request)
     {
         $data = TypeBarang::all();

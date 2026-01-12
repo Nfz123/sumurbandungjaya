@@ -13,6 +13,22 @@
         <div class="col">
             <input type="text" name="lokasi" class="form-control" placeholder="Lokasi" required>
         </div>
+        <div class="col">
+            {{-- <label>Uang Jalan</label> --}}
+            <input type="text" name="uangjalan"
+            class="form-control" 
+                inputmode="numeric"
+                autocomplete="off"
+                placeholder="Contoh: 900.000">
+        </div>
+
+        <div class="col">
+            {{-- <label>Ritasi</label> --}}
+            <input type="text" name="ritasi" inputmode="numeric"
+            class="form-control" 
+                autocomplete="off"
+                placeholder="Contoh: 1.250.000">
+        </div>
         <div class="col d-grid">
             <button type="submit" class="btn btn-success">Simpan</button>
         </div>
@@ -29,6 +45,8 @@
                     <th>No</th>
                     <th>Nama Tujuan</th>
                     <th>Lokasi</th>
+                    <th>Uang Jalan</th>
+                    <th>Ritasi</th>
                     <th>Waktu Input</th>
                     <th>Aksi</th>
                 </tr>
@@ -39,8 +57,15 @@
                         <td class="text-center">{{ $index + 1 }}</td>
                         <td>{{ $tujuan->namatujuan }}</td>
                         <td>{{ $tujuan->lokasi }}</td>
+                        <td>{{ number_format($tujuan->uangjalan, 0, ',', '.') }}</td>
+                        <td>{{ number_format($tujuan->ritasi, 0, ',', '.') }}</td>
                         <td class="text-center">{{ $tujuan->created_at->format('d/m/Y H:i') }}</td>
                         <td class="text-center">
+                            <button 
+                                class="btn btn-sm btn-warning btn-edit"
+                                data-id="{{ $tujuan->id }}">
+                                Edit
+                            </button>
                         <button class="btn btn-sm btn-danger" onclick="hapusTujuan({{ $tujuan->id }})">
                             <i class="fas fa-trash"></i>
                         </button>
@@ -56,20 +81,114 @@
     </div>
 </div>
 
+<div class="modal fade" id="editModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <form id="formEdit">
+                @csrf
+                @method('PUT')
+
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Tujuan</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+
+                    <input type="hidden" id="edit_id">
+
+                    <div class="mb-3">
+                        <label>Nama Tujuan</label>
+                        <input type="text" name="namatujuan" id="edit_namatujuan" class="form-control">
+                    </div>
+
+                    <div class="mb-3">
+                        <label>Lokasi</label>
+                        <input type="text" name="lokasi" id="edit_lokasi" class="form-control">
+                    </div>
+
+                    <div class="mb-3">
+                    <label>Uang Jalan</label>
+                    <input type="text"
+                        name="uangjalan"
+                        id="edit_uangjalan"
+                        class="form-control"
+                        inputmode="numeric"
+                        autocomplete="off"
+                        placeholder="Contoh: 1.500.000">
+                </div>
+
+                <div class="mb-3">
+                    <label>Ritasi</label>
+                    <input type="text"
+                        name="ritasi"
+                        id="edit_ritasi"
+                        class="form-control"
+                        inputmode="numeric"
+                        autocomplete="off"
+                        placeholder="Contoh: 250.000">
+                </div>
+
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">
+                        Update
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
 
 @endsection
 @push('styles')
     <!-- Bootstrap CSS (di <head>) -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="{{ asset('assets/bootstrap/css/bootstrap.min.css') }}">
+
+<link rel="stylesheet" href="{{ asset('assets/bootstrap/css/jquery.dataTables.min.css') }}">
 @endpush
 <!-- Tambahkan ini di bawah halaman -->
 @push('scripts')
 <!-- Tambahkan sebelum </body> -->
+<script src="{{ asset('assets/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ asset('assets/bootstrap/js/jquery.dataTables.min.js') }}"></script>
+<script src="{{ asset('assets/bootstrap/js/jquery-3.6.0.min.js') }}"></script>
+
+{{-- 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 <!-- Bootstrap JS dan Popper (sebelum </body>) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> --}}
+<script>
+    function formatRupiah(angka) {
+        let number_string = angka.replace(/[^,\d]/g, ''),
+            split = number_string.split(','),
+            sisa = split[0].length % 3,
+            rupiah = split[0].substr(0, sisa),
+            ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+        if (ribuan) {
+            let separator = sisa ? '.' : '';
+            rupiah += separator + ribuan.join('.');
+        }
+
+        return rupiah;
+    }
+
+    document.getElementById('uangjalan').addEventListener('keyup', function () {
+        this.value = formatRupiah(this.value);
+    });
+
+    document.getElementById('ritasi').addEventListener('keyup', function () {
+        this.value = formatRupiah(this.value);
+    });
+</script>
+
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const form = document.getElementById("formTujuan");
@@ -148,10 +267,6 @@
     });
 </script>
 <script>
-    // function editTujuan(id) {
-    //     // Contoh redirect ke halaman edit
-    //     window.location.href = `/tujuan/${id}/edit`;
-    // }
 
     function hapusTujuan(id) {
         if (confirm("Yakin ingin menghapus data ini?")) {
@@ -175,6 +290,41 @@
             });
         }
     }
+</script>
+<script>
+$(document).on('click', '.btn-edit', function () {
+    let id = $(this).data('id');
+
+    $.get('/tujuan/' + id + '/edit', function (res) {
+        $('#edit_id').val(res.data.id);
+        $('#edit_namatujuan').val(res.data.namatujuan);
+        $('#edit_lokasi').val(res.data.lokasi);
+        $('#edit_uangjalan').val(res.data.uangjalan);
+        $('#edit_ritasi').val(res.data.ritasi);
+
+        $('#editModal').modal('show');
+    });
+});
+
+// submit update
+$('#formEdit').submit(function (e) {
+    e.preventDefault();
+
+    let id = $('#edit_id').val();
+
+    $.ajax({
+        url: '/tujuan/' + id,
+        type: 'POST',
+        data: $(this).serialize(),
+        success: function (res) {
+            $('#editModal').modal('hide');
+            location.reload(); // reload data
+        },
+        error: function (err) {
+            alert('Gagal update data');
+        }
+    });
+});
 </script>
 
 @endpush

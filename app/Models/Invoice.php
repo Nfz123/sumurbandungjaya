@@ -5,9 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Tujuan extends Model
+class Invoice extends Model
 {
-    protected $table = 'tujuan';
-    protected $fillable = ['namatujuan', 'lokasi', 'uangjalan', 'ritasi'];
     use HasFactory;
 }

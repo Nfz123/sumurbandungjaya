@@ -20,11 +20,15 @@ class TujuanController extends Controller
         $request->validate([
             'namatujuan' => 'required|string|max:255',
             'lokasi' => 'required|string|max:255',
+            'uangjalan' => 'required|string|max:255',
+            'ritasi' => 'required|string|max:255',
         ]);
 
         $tujuan = Tujuan::create([
             'namatujuan' => $request->namatujuan,
             'lokasi' => $request->lokasi,
+            'uangjalan' => $request->uangjalan,
+            'ritasi' => $request->ritasi,
         ]);
 
         return response()->json([
@@ -45,5 +49,36 @@ class TujuanController extends Controller
 
         return response()->json(['status' => 'success']);
     }
+    // ambil data
+public function edit($id)
+{
+    $tujuan = Tujuan::findOrFail($id);
+
+    return response()->json([
+        'status' => 'success',
+        'data' => $tujuan
+    ]);
+}
+
+// update
+public function update(Request $request, $id)
+{
+    $request->validate([
+        'namatujuan' => 'required',
+        'lokasi'     => 'required',
+        'uangjalan'  => 'required',
+        'ritasi'     => 'required',
+    ]);
+
+    $tujuan = Tujuan::findOrFail($id);
+    $tujuan->update($request->all());
+
+    return response()->json([
+        'status' => 'success'
+    ]);
+}
+
+
+
 
 }
